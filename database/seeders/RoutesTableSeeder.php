@@ -13,42 +13,37 @@ class RoutesTableSeeder extends Seeder
      */
     public function run(): void
     {
-        DB::table('routes')->insert([
-            [
-                'departure_city' => 'Jakarta',
-                'arrival_city' => 'Bandung',
-                'cost' => 150000.00,
-                'created_at' => now(),
-                'updated_at' => now(),
-            ],
-            [
-                'departure_city' => 'Jakarta',
-                'arrival_city' => 'Semarang',
-                'cost' => 300000.00,
-                'created_at' => now(),
-                'updated_at' => now(),
-            ],
-            [
-                'departure_city' => 'Bandung',
-                'arrival_city' => 'Yogyakarta',
-                'cost' => 280000.00,
-                'created_at' => now(),
-                'updated_at' => now(),
-            ],
-            [
-                'departure_city' => 'Surabaya',
-                'arrival_city' => 'Malang',
-                'cost' => 100000.00,
-                'created_at' => now(),
-                'updated_at' => now(),
-            ],
-            [
-                'departure_city' => 'Semarang',
-                'arrival_city' => 'Solo',
-                'cost' => 80000.00,
-                'created_at' => now(),
-                'updated_at' => now(),
-            ],
-        ]);
+        // Daftar kota
+        $cities = [
+            'Jakarta',
+            'Bandung',
+            'Semarang',
+            'Yogyakarta',
+            'Surabaya',
+            'Malang',
+            'Solo',
+        ];
+
+        // Biaya dasar untuk setiap rute
+        $baseCost = 100000; // Contoh biaya dasar
+
+        // Kombinasi rute dari semua kota kecuali kota yang sama
+        $routes = [];
+        foreach ($cities as $departureCity) {
+            foreach ($cities as $arrivalCity) {
+                if ($departureCity !== $arrivalCity) {
+                    $routes[] = [
+                        'departure_city' => $departureCity,
+                        'arrival_city' => $arrivalCity,
+                        'cost' => $baseCost + rand(0, 200000), // Biaya acak antara 100000 dan 300000
+                        'created_at' => now(),
+                        'updated_at' => now(),
+                    ];
+                }
+            }
+        }
+
+        // Insert data ke tabel routes
+        DB::table('routes')->insert($routes);
     }
 }

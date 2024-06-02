@@ -15,11 +15,11 @@ class SchedulesTableSeeder extends Seeder
     {
         // Sample departure times
         $departureTimes = [
-            '2024-06-10 08:00:00',
-            '2024-06-11 10:00:00',
-            '2024-06-12 12:00:00',
-            '2024-06-13 14:00:00',
-            '2024-06-14 16:00:00',
+            '2024-06-10',
+            '2024-06-11 ',
+            '2024-06-12 ',
+            '2024-06-13 ',
+            '2024-06-14 ',
         ];
 
         // Get all route and fleet IDs

@@ -28,7 +28,12 @@ export default function Navbar() {
                     >
                         Home
                     </Link>
-                    <Link className={inactive}>Order</Link>
+                    <Link
+                        href={route("order.index")}
+                        className={url == "/order" ? active : inactive}
+                    >
+                        Order
+                    </Link>
                     <Link
                         href={route("about.index")}
                         className={url == "/about" ? active : inactive}
