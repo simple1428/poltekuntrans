@@ -4,7 +4,7 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
-        <title inertia>{{ config('app.name', 'Laravel') }}</title>
+        <title inertia>{{ config('app.name', 'Poltekun Trans') }}</title>
 
         <!-- Fonts -->
         <link rel="preconnect" href="https://fonts.bunny.net">
@@ -18,5 +18,8 @@
     </head>
     <body class="font-sans antialiased">
         @inertia
+         <script>
+            window.asset = '{{ asset('') }}';
+        </script>
     </body>
 </html>
