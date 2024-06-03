@@ -5,6 +5,7 @@ import TextInput from "@/Components/TextInput";
 import HomeLayout from "@/Layouts/HomeLayout";
 import { Head, Link, useForm } from "@inertiajs/react";
 import React, { useState, useEffect } from "react";
+import CardBus from "./Comp/CardBus";
 
 export default function Index({ routes, schedules }) {
     const { data, setData } = useForm({
@@ -20,7 +21,6 @@ export default function Index({ routes, schedules }) {
     const [filteredArrivalCities, setFilteredArrivalCities] = useState([]);
     const [isDepartureSelected, setIsDepartureSelected] = useState(false);
     const [availableFleets, setAvailableFleets] = useState([]);
-    const [timeLefts, setTimeLefts] = useState({});
 
     const handleDepartureChange = (event) => {
         const departureCity = event.target.value;
@@ -52,72 +52,24 @@ export default function Index({ routes, schedules }) {
             console.error("Route not found");
             return;
         }
-
-        const selectedDate = new Date(data.departure_date);
-        const filteredSchedules = schedules.filter((schedule) => {
-            const scheduleDate = new Date(schedule.departure_time);
-            return (
-                schedule.route_id === route.id &&
-                scheduleDate.toDateString() === selectedDate.toDateString() &&
-                schedule.status
-            );
-        });
-
-        setAvailableFleets(filteredSchedules);
-
-        const initialTimeLefts = filteredSchedules.reduce((acc, schedule) => {
-            acc[schedule.id] = calculateTimeLeft(schedule.departure_time);
-            return acc;
-        }, {});
-        setTimeLefts(initialTimeLefts);
-    };
-
-    const formatToIndonesianDate = (dateString) => {
-        const date = new Date(dateString);
-        return new Intl.DateTimeFormat("id-ID", {
-            year: "numeric",
-            month: "long",
-            day: "numeric",
-            timeZone: "Asia/Jakarta",
-        }).format(date);
-    };
-
-    const calculateTimeLeft = (departureTime) => {
-        const now = new Date();
-        const difference = +new Date(departureTime) - now;
-
-        if (difference <= 0) return null;
-
-        return {
-            days: Math.floor(difference / (1000 * 60 * 60 * 24)),
-            hours: Math.floor((difference / (1000 * 60 * 60)) % 24),
-            minutes: Math.floor((difference / 1000 / 60) % 60),
-            seconds: Math.floor((difference / 1000) % 60),
-        };
-    };
-
-    useEffect(() => {
-        const interval = setInterval(() => {
-            setTimeLefts((prevTimeLefts) => {
-                const newTimeLefts = {};
-                for (const id in prevTimeLefts) {
-                    newTimeLefts[id] = calculateTimeLeft(
-                        availableFleets.find((schedule) => schedule.id === +id)
-                            .departure_time
-                    );
-                }
-                return newTimeLefts;
+        if (data.departure_date) {
+            const selectedDate = new Date(data.departure_date);
+            const filteredSchedules = schedules.filter((schedule) => {
+                const scheduleDate = new Date(schedule.departure_time);
+                return (
+                    schedule.route_id === route.id &&
+                    scheduleDate.toDateString() ===
+                        selectedDate.toDateString() &&
+                    schedule.status
+                );
             });
-        }, 1000);
-
-        return () => clearInterval(interval);
-    }, [availableFleets]);
-
-    const renderCountdown = (timeLeft) => {
-        if (!timeLeft) return "Berangkat";
-
-        const { days, hours, minutes, seconds } = timeLeft;
-        return `${days}h ${hours}j ${minutes}m ${seconds}d`;
+            setAvailableFleets(filteredSchedules);
+        } else {
+            const filteredSchedules = schedules.filter((schedule) => {
+                return schedule.route_id === route.id && schedule.status;
+            });
+            setAvailableFleets(filteredSchedules);
+        }
     };
 
     return (
@@ -213,7 +165,6 @@ export default function Index({ routes, schedules }) {
                                                     e.target.value
                                                 );
                                             }}
-                                            required
                                         />
                                     </div>
                                 </div>
@@ -228,48 +179,26 @@ export default function Index({ routes, schedules }) {
                 </div>
                 <div className="bg-white py-10 ">
                     <Section>
-                        {availableFleets.length > 0 ? (
-                            availableFleets.map((schedule) => (
-                                <div
-                                    key={schedule.id}
-                                    className="bg-gray-100 p-4 rounded-lg shadow-md mb-4 relative flex justify-between items-center"
-                                >
-                                    <div className="">
-                                        <h3 className="text-xl font-bold">
-                                            {schedule.fleet.model}
-                                        </h3>
-                                        <p>
-                                            Nomor Armada:{" "}
-                                            {schedule.fleet.fleet_number}
-                                        </p>
-                                        <p>
-                                            Tanggal Keberangkatan:{" "}
-                                            {formatToIndonesianDate(
-                                                schedule.departure_time
-                                            )}
-                                        </p>
-                                        <p>
-                                            Kapasitas: {schedule.fleet.capacity}
-                                        </p>
-                                    </div>
-                                    <div className="">
-                                        <Link className="rounded-l-full bg-secondary px-3 py-2 text-white">
-                                            Booking
-                                        </Link>
-                                    </div>
-
-                                    <p className="text-xs absolute -top-2 left-0 bg-secondary text-white rounded-r-full rounded-tl-full px-2 py-1 animate-pulse">
-                                        {renderCountdown(
-                                            timeLefts[schedule.id]
-                                        )}
-                                    </p>
-                                </div>
-                            ))
-                        ) : (
-                            <p className="text-center text-gray-500">
-                                Tidak ada armada yang tersedia.
-                            </p>
-                        )}
+                        {
+                            availableFleets.length > 0
+                                ? availableFleets.map((schedule, index) => (
+                                      <CardBus
+                                          key={index}
+                                          schedule={schedule}
+                                      />
+                                  ))
+                                : schedules.map((schedule, index) => {
+                                      return (
+                                          <CardBus
+                                              key={index}
+                                              schedule={schedule}
+                                          />
+                                      );
+                                  })
+                            // <p className="text-center text-gray-500">
+                            //     Tidak ada armada yang tersedia.
+                            // </p>
+                        }
                     </Section>
                 </div>
             </HomeLayout>

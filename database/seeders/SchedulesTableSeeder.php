@@ -8,25 +8,44 @@ use Illuminate\Support\Facades\DB;
 
 class SchedulesTableSeeder extends Seeder
 {
-    /**
-     * Run the database seeds.
-     */
+
     public function run(): void
     {
-        // Sample departure times
-        $departureTimes = [
+        // Sample departure dates
+        $departureDates = [
+            '2024-06-3',
             '2024-06-10',
-            '2024-06-11 ',
-            '2024-06-12 ',
-            '2024-06-13 ',
-            '2024-06-14 ',
+            '2024-06-10',
+            '2024-06-10',
+            '2024-06-11',
+            '2024-06-11',
+            '2024-06-11',
+            '2024-06-11',
+            '2024-06-11',
+            '2024-06-11',
+            '2024-06-11',
+            '2024-06-12',
+            '2024-06-12',
+            '2024-06-12',
+            '2024-06-12',
+            '2024-06-12',
+            '2024-06-12',
+            '2024-06-13',
+            '2024-06-13',
+            '2024-06-13',
+            '2024-06-13',
+            '2024-06-13',
+            '2024-06-14',
+            '2024-06-14',
+            '2024-06-14',
+            '2024-06-14',
         ];
 
         // Get all route and fleet IDs
         $routeIds = DB::table('routes')->pluck('id')->toArray();
         $fleetIds = DB::table('fleets')->pluck('id')->toArray();
 
-        foreach ($departureTimes as $departureTime) {
+        foreach ($departureDates as $departureDate) {
             // Randomly select a route and fleet ID
             $randomRouteId = $routeIds[array_rand($routeIds)];
             $randomFleetId = $fleetIds[array_rand($fleetIds)];
@@ -38,7 +57,7 @@ class SchedulesTableSeeder extends Seeder
             DB::table('schedules')->insert([
                 'route_id' => $randomRouteId,
                 'fleet_id' => $randomFleetId,
-                'departure_time' => $departureTime,
+                'departure_time' => $departureDate,
                 'status' => $status,
                 'created_at' => now(),
                 'updated_at' => now(),
