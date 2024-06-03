@@ -119,7 +119,7 @@ export default function Index() {
                             </select>
                         </div>
                     </div>
-                    <div className="  bg-secondary w-32 text-white text-center rounded-l-full py-3 uppercase">
+                    <div className="  bg-secondary w-36 text-white text-center rounded-l-full py-3 uppercase">
                         Order Now
                     </div>
                 </Section>
