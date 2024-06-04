@@ -15,12 +15,13 @@ return new class extends Migration
             $table->id();
             $table->string('fleet_number')->unique();
             $table->string('model');
+            $table->string('image')->nullable();
             $table->integer('capacity');
-            $table->enum('status', ['available', 'maintenance']);
+            $table->enum('status', ['available', 'maintenance','rented']);
             $table->timestamps();
         });
     }
- 
+
     public function down(): void
     {
         Schema::dropIfExists('fleets');

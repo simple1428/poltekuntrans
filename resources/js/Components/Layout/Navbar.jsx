@@ -6,6 +6,7 @@ export default function Navbar() {
     const active = "font-semibold";
     const inactive = "font-normall";
     const { url, component } = usePage();
+    const { auth } = usePage().props;
     return (
         <header className=" sticky  top-5 z-[990]">
             <div className="flex w-full justify-between container items-center  shadow-md mx-auto bg-white  px-[32px] py-4 rounded-[10px]">
@@ -30,7 +31,7 @@ export default function Navbar() {
                     </Link>
                     <Link
                         href={route("order.index")}
-                        className={url == "/order" ? active : inactive}
+                        className={url.startsWith("/order") ? active : inactive}
                     >
                         Order
                     </Link>
@@ -46,12 +47,14 @@ export default function Navbar() {
                     >
                         Contact
                     </Link>
-                    <Link
-                        href={route("login")}
-                        className="bg-secondary flex items-center justify-center px-3 py-1.5 rounded-md text-white"
-                    >
-                        Login
-                    </Link>
+                    {!auth && (
+                        <Link
+                            href={route("login")}
+                            className="bg-secondary flex items-center justify-center px-3 py-1.5 rounded-md text-white"
+                        >
+                            Login
+                        </Link>
+                    )}
                 </div>
             </div>
         </header>

@@ -49,6 +49,7 @@ class SchedulesTableSeeder extends Seeder
             // Randomly select a route and fleet ID
             $randomRouteId = $routeIds[array_rand($routeIds)];
             $randomFleetId = $fleetIds[array_rand($fleetIds)];
+            $capacity = DB::table('fleets')->where('id', $randomFleetId)->value('capacity');
 
             // Generate a random status (true for active, false for inactive)
             $status = (bool)random_int(0, 1);
@@ -58,6 +59,7 @@ class SchedulesTableSeeder extends Seeder
                 'route_id' => $randomRouteId,
                 'fleet_id' => $randomFleetId,
                 'departure_time' => $departureDate,
+                'capacity' => $capacity,
                 'status' => $status,
                 'created_at' => now(),
                 'updated_at' => now(),

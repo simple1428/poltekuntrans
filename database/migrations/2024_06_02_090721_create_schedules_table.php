@@ -16,6 +16,7 @@ return new class extends Migration
             $table->foreignId('route_id')->constrained('routes')->onDelete('cascade');
             $table->foreignId('fleet_id')->constrained('fleets')->onDelete('cascade');
             $table->date('departure_time');
+            $table->integer('capacity');
             $table->boolean('status');
             $table->timestamps();
         });
