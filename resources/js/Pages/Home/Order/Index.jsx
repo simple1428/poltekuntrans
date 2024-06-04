@@ -20,6 +20,7 @@ export default function Index({ routes, schedules }) {
 
     const [filteredArrivalCities, setFilteredArrivalCities] = useState([]);
     const [isDepartureSelected, setIsDepartureSelected] = useState(false);
+    const [isActiveSection, setIsActiveSection] = useState(false);
     const [availableFleets, setAvailableFleets] = useState([]);
 
     const handleDepartureChange = (event) => {
@@ -52,23 +53,32 @@ export default function Index({ routes, schedules }) {
             console.error("Route not found");
             return;
         }
+        console.log("Data:", data);
+        console.log("Route:", route);
+
         if (data.departure_date) {
             const selectedDate = new Date(data.departure_date);
             const filteredSchedules = schedules.filter((schedule) => {
                 const scheduleDate = new Date(schedule.departure_time);
+                console.log("Schedule Date:", scheduleDate);
+                console.log("Selected Date:", selectedDate);
                 return (
-                    schedule.route_id === route.id &&
+                    schedule.route_id == route.id &&
                     scheduleDate.toDateString() ===
                         selectedDate.toDateString() &&
                     schedule.status
                 );
             });
+            console.log("Filtered Schedules with Date:", filteredSchedules);
             setAvailableFleets(filteredSchedules);
+            setIsActiveSection(true);
         } else {
             const filteredSchedules = schedules.filter((schedule) => {
-                return schedule.route_id === route.id && schedule.status;
+                return schedule.route_id == route.id && schedule.status;
             });
+            console.log("Filtered Schedules without Date:", filteredSchedules);
             setAvailableFleets(filteredSchedules);
+            setIsActiveSection(true);
         }
     };
 
@@ -179,26 +189,34 @@ export default function Index({ routes, schedules }) {
                 </div>
                 <div className="bg-white py-10 ">
                     <Section>
-                        {
-                            availableFleets.length > 0
-                                ? availableFleets.map((schedule, index) => (
-                                      <CardBus
-                                          key={index}
-                                          schedule={schedule}
-                                      />
-                                  ))
-                                : schedules.map((schedule, index) => {
-                                      return (
-                                          <CardBus
-                                              key={index}
-                                              schedule={schedule}
-                                          />
-                                      );
-                                  })
-                            // <p className="text-center text-gray-500">
-                            //     Tidak ada armada yang tersedia.
-                            // </p>
-                        }
+                        <h1 className="border-b pt-5 mb-5 text-xl font-bold uppercase">
+                            Armada yang tersedia
+                        </h1>
+
+                        {isActiveSection == true ? (
+                            availableFleets.length > 0 ? (
+                                availableFleets.map((schedule, index) => (
+                                    <CardBus key={index} schedule={schedule} />
+                                ))
+                            ) : (
+                                <p className="text-center text-gray-500">
+                                    Tidak ada armada yang tersedia.
+                                </p>
+                            )
+                        ) : (
+                            schedules
+                                .filter((sc) => {
+                                    return sc.status === 1;
+                                })
+                                .map((schedule, index) => {
+                                    return (
+                                        <CardBus
+                                            key={index}
+                                            schedule={schedule}
+                                        />
+                                    );
+                                })
+                        )}
                     </Section>
                 </div>
             </HomeLayout>
