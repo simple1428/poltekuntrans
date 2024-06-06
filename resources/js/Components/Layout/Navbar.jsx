@@ -7,6 +7,7 @@ export default function Navbar() {
     const inactive = "font-normall";
     const { url, component } = usePage();
     const { auth } = usePage().props;
+    console.log(auth);
     return (
         <header className=" sticky  top-5 z-[990]">
             <div className="flex w-full justify-between container items-center  shadow-md mx-auto bg-white  px-[32px] py-4 rounded-[10px]">
@@ -47,13 +48,15 @@ export default function Navbar() {
                     >
                         Contact
                     </Link>
-                    {!auth && (
+                    {!auth.user ? (
                         <Link
                             href={route("login")}
                             className="bg-secondary flex items-center justify-center px-3 py-1.5 rounded-md text-white"
                         >
                             Login
                         </Link>
+                    ) : (
+                        <Link>Profile</Link>
                     )}
                 </div>
             </div>
