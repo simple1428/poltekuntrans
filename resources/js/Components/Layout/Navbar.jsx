@@ -56,7 +56,7 @@ export default function Navbar() {
                             Login
                         </Link>
                     ) : (
-                        <Link>Profile</Link>
+                        <Link href={route("myorder.index")}>My Order</Link>
                     )}
                 </div>
             </div>

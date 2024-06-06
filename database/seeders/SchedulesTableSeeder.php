@@ -13,7 +13,7 @@ class SchedulesTableSeeder extends Seeder
     {
         // Sample departure dates
         $departureDates = [
-            '2024-06-3',
+            '2024-06-10',
             '2024-06-10',
             '2024-06-10',
             '2024-06-10',

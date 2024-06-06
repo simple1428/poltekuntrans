@@ -57,6 +57,6 @@ class Booking extends Controller
             ];
             Payment::create($data2);
         }
-        return redirect()->route('order.index');
+        return redirect()->route('booking.show',$booking->id);
     }
 }

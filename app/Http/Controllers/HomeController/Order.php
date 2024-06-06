@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\HomeController;
 
 use App\Http\Controllers\Controller;
+use App\Models\Booking;
 use App\Models\Fleet;
 use App\Models\Routes;
 use App\Models\Schedule;
@@ -19,5 +20,12 @@ class Order extends Controller
             'schedules' => Schedule::with(['route','fleet'])->get()
         ];
         return Inertia::render('Home/Order/Index',$data);
+    }
+    public function olders()
+    {
+        $data = [
+            'booking' => Booking::with(['schedule.route', 'schedule.fleet','payments'])->get()
+        ];
+        return Inertia::render('Home/Order/MyOrder',$data);
     }
 }

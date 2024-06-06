@@ -15,6 +15,7 @@ Route::get('/', [HomeController::class, 'index'])->name('home.index');
 Route::get('/about', [AboutController::class, 'index'])->name('about.index');
 Route::get('/contact', [ContactController::class, 'index'])->name('contact.index');
 Route::get('/order', [OrderController::class, 'index'])->name('order.index');
+Route::get('/my-order', [OrderController::class, 'olders'])->name('myorder.index');
 Route::get('/order/booking/{schedule}', [BookingController::class, 'index'])->name('booking.index');
 Route::post('/order/booking/store', [BookingController::class, 'store'])->name('booking.store')->middleware('auth');
 Route::get('/order/{booking}/show', [BookingController::class, 'show'])->name('booking.show')->middleware('auth');
